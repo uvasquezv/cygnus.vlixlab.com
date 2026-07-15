@@ -29,7 +29,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-links a{color:var(--muted);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color 0.2s}
 .nav-links a:hover{color:var(--gold)}
 
-.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;margin-left:14px;flex-direction:column;gap:5px;z-index:120}
+
+.mmenu{display:none;position:fixed;top:0;right:0;height:100%;width:min(80vw,320px);background:#050505;border-left:1px solid var(--border);flex-direction:column;justify-content:center;padding:90px 28px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:200;overflow-y:auto}
+.mmenu.open{transform:translateX(0)}
+.mmenu a{color:rgba(255,255,255,0.85);font-size:15px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;padding:20px 0;border-bottom:1px solid rgba(201,168,76,0.12);transition:color .2s}
+.mmenu a:last-of-type{border-bottom:none}
+.mmenu a:active,.mmenu a:hover{color:var(--gold)}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);opacity:0;pointer-events:none;transition:opacity .3s;z-index:190}
+.nav-overlay.open{opacity:1;pointer-events:auto}
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:10px;margin-left:12px;flex-direction:column;gap:5px;z-index:220;flex:none}
 .nav-burger span{display:block;width:24px;height:2px;background:var(--gold);border-radius:2px;transition:transform .3s,opacity .3s}
 .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav-burger.open span:nth-child(2){opacity:0}
@@ -274,12 +282,9 @@ footer{background:var(--dark1);border-top:1px solid var(--border);padding:40px 5
   .nav-cta{font-size:10px;padding:8px 16px}
   .nav-logo img{height:40px}
   nav{flex-wrap:wrap;padding:12px 20px}
-  .nav-links{position:fixed;top:0;right:0;bottom:0;width:min(78vw,320px);background:rgba(5,5,5,0.98);backdrop-filter:blur(20px);border-left:1px solid var(--border);flex-direction:column;align-items:flex-start;justify-content:center;gap:0;padding:80px 30px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:110;display:flex}
-  .nav-links.open{transform:translateX(0)}
-  .nav-links a{width:100%;padding:18px 0;font-size:15px;letter-spacing:2px;border-bottom:1px solid rgba(201,168,76,0.12)}
-  .nav-links a:last-child{border-bottom:none}
-  .nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s;z-index:105}
-  .nav-overlay.open{opacity:1;pointer-events:auto}
+  .nav-links{display:none}
+  .nav-logo{margin-right:auto}
+  .mmenu{display:flex}
   .hero{padding:100px 24px 80px}
   .hero-logo{width:58vw}
   .sobre-sec,.servicios-wrap,.proceso-wrap,.contact-sec{padding:64px 20px}
@@ -326,6 +331,14 @@ footer{background:var(--dark1);border-top:1px solid var(--border);padding:40px 5
   <a href="https://wa.me/522201200637?text=Hola%2C%20me%20interesa%20una%20sesi%C3%B3n%20con%20Cygnus.vlix" target="_blank" class="nav-cta">Cotizar →</a>
 </nav>
 <div class="nav-overlay" id="navOverlay" onclick="toggleMenu()"></div>
+<div class="mmenu" id="mmenu">
+  <a href="#paquetes">Paquetes</a>
+  <a href="#portafolio">Portafolio</a>
+  <a href="#servicios">Servicios</a>
+  <a href="#proceso">Proceso</a>
+  <a href="https://galeria.vlixlab.com/">Galer&iacute;a</a>
+  <a href="#contacto">Contacto</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -651,19 +664,13 @@ function sendCygnus() {
 </script>
 <script>
 function toggleMenu(){
-  var l=document.querySelector('.nav-links'), b=document.getElementById('navBurger'), o=document.getElementById('navOverlay');
-  var abierto=l.classList.toggle('open');
+  var m=document.getElementById('mmenu'), b=document.getElementById('navBurger'), o=document.getElementById('navOverlay');
+  var abierto=m.classList.toggle('open');
   b.classList.toggle('open',abierto); o.classList.toggle('open',abierto);
   b.setAttribute('aria-expanded',abierto); document.body.style.overflow=abierto?'hidden':'';
 }
-document.querySelectorAll('.nav-links a').forEach(function(a){
-  a.addEventListener('click',function(){
-    if(document.querySelector('.nav-links').classList.contains('open')) toggleMenu();
-  });
-});
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape' && document.querySelector('.nav-links').classList.contains('open')) toggleMenu();
-});
+document.querySelectorAll('#mmenu a').forEach(function(a){ a.addEventListener('click',function(){ toggleMenu(); }); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape' && document.getElementById('mmenu').classList.contains('open')) toggleMenu(); });
 </script>
 </body>
 </html>
